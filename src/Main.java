@@ -10,12 +10,13 @@ import org.jsoup.nodes.Element;
 public class Main {
 
     public static void main(String[] args) {
-        String seed = "https://yssupon.github.io/";
+        String seed = "https://it.wikipedia.org/";
         ArrayList<String> visited = new ArrayList<>();
-        crawl(seed, 2,visited);
+        crawl(seed, 5,visited);
     }
 
     public static void crawl(String seed, int count,List<String> visited) {
+        visited.add(seed);
         if (count != 0) {
             Document doc = request(seed, visited);
             if (doc == null) {
@@ -24,7 +25,9 @@ public class Main {
             for (Element link : doc.select("a[href]")) {
 
                 String nextLink = link.absUrl("href");
-                crawl( nextLink, count-1,visited);
+                if (!visited.contains(nextLink)) {
+                    crawl( nextLink, count-1,visited);
+                }
             }
         }
     }
